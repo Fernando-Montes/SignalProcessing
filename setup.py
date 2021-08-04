@@ -37,13 +37,3 @@ def signalConstruction():
     nois = noise(samples)
     data = [base[i] + rise[i] + expo[i] + nois[i] for i in range(samples)] 
     return data
-
-# Trapezoidal filter ---------------------------------------
-
-def trapFilter(data, tGap, tPeaking, tau):
-    dataFiltered = [0]*len(data)
-    for k in range(2*tPeaking + tGap - 1, len(data)):
-        before = sum( data[i]*math.exp(-(tPeaking + tGap)/tau) for i in range(k-2*tPeaking-tGap+1, k-tPeaking-tGap+1) )
-        after =  sum( data[i] for i in range(k-tPeaking+1, k+1) )
-        dataFiltered[k] = (-before + after)/tPeaking
-    return dataFiltered
